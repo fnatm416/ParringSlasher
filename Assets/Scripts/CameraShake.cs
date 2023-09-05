@@ -34,7 +34,6 @@ public class CameraShake : MonoBehaviour
                 shakeRoutine = null;
             shakeRoutine = StartCoroutine(Vibrate());
         }
-
     }
 
     IEnumerator Vibrate()

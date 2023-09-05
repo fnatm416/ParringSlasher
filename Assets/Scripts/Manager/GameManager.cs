@@ -1,20 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
 
-    public RectTransform result_ui; //결과창 ui
+    public MobileController mobileController;
+
     public Text scoreText;  //현재 점수를 인게임에 표시
-
+    public RectTransform result_ui; //결과창 ui
     public RectTransform pause_ui;  //게임 일시중지 ui
-    public bool pause = false;
 
-    public Player player;   //플레이어
+    public GameObject player;   //플레이어
     public BackgroundScrolling map; //스크롤링할 맵
     public CameraShake cameraShake; //카메라쉐이크
 
@@ -22,7 +19,7 @@ public class GameManager : MonoBehaviour
     public Enemy currentEnemy; //현재 상대하고있는 적
     public Enemy nextEnemy; //다음에 상대할 적
 
-    public int stage;  //현재 스테이지
+    public int stage { get; private set; }  //현재 스테이지
     public float maxHp; //플레이어의 최대체력(소진하면 게임오버)
     public float _currentHp;   //플레이어 현재체력
     public float currentHp
@@ -35,15 +32,21 @@ public class GameManager : MonoBehaviour
             if (_currentHp <= 0)
             {
                 currentEnemy.GetComponent<Enemy>().enabled = false;
-                player.OnGameOver();
+                player.GetComponent<Player>().OnGameOver();
             }
         }
     }
     public int currentScore = 0;    //현재점수
     public int highScore { get; private set; }  //최고점수
     public float gameSpeed { get; private set; }    //게임의 배속
+    public bool isPause { get; private set; }
 
     void Awake()
+    {
+        Init();       
+    }
+
+    public void Init()
     {
         //싱글톤
         if (instance == null)
@@ -53,12 +56,13 @@ public class GameManager : MonoBehaviour
         highScore = PlayerPrefs.GetInt("HighScore");
     }
 
-    private void Start()
+
+    void Start()
     {
         GameStart();
     }
 
-    private void Update()
+    void Update()
     {
         //스코어 최신화
         scoreText.text = currentScore.ToString("N0");
@@ -73,9 +77,50 @@ public class GameManager : MonoBehaviour
         currentEnemy.transform.position = new Vector3(1, currentEnemy.transform.position.y, 0);
 
         //스크립트 활성화
-        player.GetComponent<Player>().enabled = true;
+        player.GetComponent<Player>().ControlEnable();
+        if (mobileController.gameObject.activeSelf) { mobileController.ControlEnable(); }
         currentEnemy.GetComponent<Enemy>().enabled = true;
 
+    }
+
+    //게임시작할 때마다 초기화
+    public void GameStart()
+    {
+        if (currentEnemy != null)
+            Destroy(currentEnemy.gameObject);
+
+        currentEnemy = null;
+        nextEnemy = null;
+
+        map.Init();
+
+        SoundManager.instance.PlayBgm(true);
+
+        stage = 0;
+
+        currentHp = maxHp;
+        currentScore = 0;
+
+        gameSpeed = 1.0f;
+        Time.timeScale = gameSpeed;
+
+        result_ui.gameObject.SetActive(false);
+        GamePauseOff();
+        SetRandomEnemy();
+        NextStage();
+    }
+
+    //게임오버 되었을 때, UI 출력
+    public void GameOver()
+    {
+        SoundManager.instance.PlayBgm(false);
+
+        Destroy(currentEnemy.gameObject);
+        if (currentScore > highScore)
+            PlayerPrefs.SetInt("HighScore", currentScore);
+
+        UIManager.instance.ShowScore();
+        result_ui.gameObject.SetActive(true);
     }
 
     //적을 물리치고나면 다음 적에게 이동
@@ -89,9 +134,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = gameSpeed;
 
         SetEnemy();
-        //컴포넌트를 껐다켜서 player의 Disable을 발동
-        player.GetComponent<Player>().enabled = true;
-        player.GetComponent<Player>().enabled = false;
+
+        player.GetComponent<Player>().ControlDisable();
+        if (mobileController.gameObject.activeSelf) { mobileController.ControlDisable(); }
         map.Scrolling();
     }
 
@@ -109,22 +154,6 @@ public class GameManager : MonoBehaviour
         SetRandomEnemy();
     }
 
-    //게임시작할 때마다 초기화
-    public void GameStart()
-    {
-        SoundManager.instance.PlayBgm(true);
-        player.GetComponent<PlayerInput>().currentActionMap.actions[2].Enable();    
-        pause = false;
-        stage = 0;
-        currentHp = maxHp;
-        currentScore = 0;
-        gameSpeed = 1.0f;
-        Time.timeScale = gameSpeed;
-        result_ui.gameObject.SetActive(false);
-        SetRandomEnemy();
-        NextStage();
-    }
-
     //랜덤몬스터 생성
     public void SetRandomEnemy()
     {
@@ -136,42 +165,36 @@ public class GameManager : MonoBehaviour
         nextEnemy = enemys[random];
     }
 
-    //게임오버 되었을 때, UI 출력
-    public void GameOver()
-    {
-        SoundManager.instance.PlayBgm(false);
+    
 
-        Destroy(currentEnemy.gameObject);
-        if (currentScore > highScore)
-            PlayerPrefs.SetInt("HighScore", currentScore);
-        player.GetComponent<PlayerInput>().currentActionMap.actions[2].Disable();   //중지버튼 막기
-        result_ui.gameObject.SetActive(true);
+    public void Pause()
+    {
+        if (isPause == false)
+            GamePauseOn();
+        else if (isPause == true)
+            GamePauseOff();
     }
 
     //게임 일시중지
     public void GamePauseOn()
     {
-        pause = true;
+        isPause = true;
         pause_ui.gameObject.SetActive(true);
         Time.timeScale = 0;
-        SoundManager.instance.BgmEffect(true);
         cameraShake.PauseVibrate(true);
     }
 
     public void GamePauseOff()
     {
-        pause = false;
+        isPause = false;
         pause_ui.gameObject.SetActive(false);
         Time.timeScale = gameSpeed;
-        SoundManager.instance.BgmEffect(false);
         cameraShake.PauseVibrate(false);
     }
 
-    public void GamePause()
+    //게임 종료
+    public void GameQuit()
     {
-        if (pause == false)
-            GamePauseOn();
-        else if (pause == true)
-            GamePauseOff();
+        Application.Quit();
     }
 }

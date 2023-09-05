@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Enemy : MonoBehaviour
 {
@@ -42,15 +40,14 @@ public class Enemy : MonoBehaviour
     #endregion
 
     #region AI
-    protected void Awake()
+    void Awake()
     {
         anim = GetComponent<Animator>();
         spr = GetComponent<SpriteRenderer>();
     }
 
-    protected void Start()
+    void Start()
     {
-        //플레이어와 대치하는 지점으로 수정해야함
         StartCoroutine(AttackCoolTime());
     }
 
@@ -114,7 +111,7 @@ public class Enemy : MonoBehaviour
     IEnumerator DeathRoutine()
     {
         yield return new WaitForSeconds(1.0f);
-        gameObject.SetActive(false);
+        Destroy(gameObject);
         GameManager.instance.NextStage();
     }
     #endregion

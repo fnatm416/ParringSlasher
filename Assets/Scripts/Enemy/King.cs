@@ -1,13 +1,19 @@
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class King : Enemy
 {
     private Sequence sequence;
     private int count = 0;
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if (isDie)
+            sequence.Kill();
+    }
 
     //공격자세를 잡고나서 지연
     public void OnAttackDelay(float delay)
@@ -83,11 +89,5 @@ public class King : Enemy
         });
     }
 
-    protected override void Update()
-    {
-        base.Update();
-
-        if (isDie)
-            sequence.Kill();
-    }
+    
 }

@@ -1,15 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEngine.Experimental.Rendering;
-using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
-    #region Attribute
     public AnimationClip[] attackAnimations;    //공격 애니메이션들을 등록(애니메이션길이를 0:10 통일)
     public GameObject slashEffect;
     public Transform hitbox;    //공격판정을 일으킬 히트박스
@@ -38,9 +33,7 @@ public class Player : MonoBehaviour
     private bool isParrying = false; //패링이 가능한 상태인지
     private Coroutine guardRoutine = null;  //막기관련 코루틴 제어
     private bool canGuard = true;   //막기가 가능한지 여부
-    #endregion
 
-    #region LifeCycle
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -49,28 +42,17 @@ public class Player : MonoBehaviour
         SetAttackSpeed(attackSpeed);
         cameraShake = Camera.main.GetComponent<CameraShake>();
     }
-    private void OnEnable()
+
+    public void Init()
     {
-        pi.actions["Attack"].Enable();
-        pi.actions["Guard"].Enable();
-
-        Init();
-        anim.SetBool("IsMove", false);
+        //초기화
+        isDie = false;
+        isAttack = false;
+        isGuard = false;
+        isParrying = false;
+        guardRoutine = null;
+        canGuard = true;
     }
-
-    private void OnDisable()
-    {
-        pi.actions["Attack"].Disable();
-        pi.actions["Guard"].Disable();
-
-        if (isDie == false)
-            anim.SetBool("IsMove", true);
-
-        DOTween.KillAll();
-    }
-
-
-    #endregion
 
     #region Attack
     //공격속도 고정시키기
@@ -110,6 +92,7 @@ public class Player : MonoBehaviour
         Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(hitbox.position, hitbox.localScale, 0);
         foreach (Collider2D colider in collider2Ds)
         {
+            //적에게 명중 시, 이펙트 및 효과음 출력
             if (colider.CompareTag("Enemy"))
             {
                 Enemy enemy = colider.GetComponent<Enemy>();
@@ -145,13 +128,14 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Hitted
-    //방어하기
+    //가드하기
     public void Guard(InputAction.CallbackContext context)
     {
-        if(context.performed) { OnGuard(); }
-        else if(context.canceled) { OnGuardEnd(); }
+        if (context.performed) { OnGuard(); }
+        else if (context.canceled) { OnGuardEnd(); }
     }
 
+    //가드 시작
     public void OnGuard()
     {
         if (isDie == false)
@@ -173,7 +157,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    //가드 내릴때 함수
+    //가드 끝
     public void OnGuardEnd()
     {
         if (isDie == false)
@@ -241,18 +225,31 @@ public class Player : MonoBehaviour
     }
     #endregion
 
-    public void Init()
+    public void ControlEnable()
     {
-        isDie = false;
-        isAttack = false;
-        isGuard = false;
-        isParrying = false;
-        guardRoutine = null;
-        canGuard = true;
+        //공격 및 방어가 가능한 상태
+        pi.actions["Attack"].Enable();
+        pi.actions["Guard"].Enable();
+
+        Init();
+        anim.SetBool("IsMove", false);
+    }
+
+    public void ControlDisable()
+    {
+        //공격 및 방어를 못하게 막기
+        pi.actions["Attack"].Disable();
+        pi.actions["Guard"].Disable();
+
+        if (isDie == false)
+            anim.SetBool("IsMove", true);
+
+        DOTween.KillAll();
     }
 
     public void OnGameOver()
     {
+        //죽는 즉시 애니메이션 실행
         isDie = true;
         this.enabled = false;
         anim.SetTrigger("Die");
@@ -260,10 +257,11 @@ public class Player : MonoBehaviour
 
     public void OnDie()
     {
+        //죽는 애니메이션이 끝나고 게임종료를 호출
         GameManager.instance.GameOver();
     }
 
-    //공격범위를 scene창에 표시(Visiable)
+    //공격범위를 scene창에 표시(실행 전 범위 확인)
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;

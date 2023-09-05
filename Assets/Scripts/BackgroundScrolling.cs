@@ -6,7 +6,9 @@ public class BackgroundScrolling : MonoBehaviour
 {
     public float speed;
     public Transform[] backgrounds;
-    private Vector2[] points = new Vector2[3];
+
+    private Dictionary<int, Vector3> points = new Dictionary<int, Vector3>();
+    private Coroutine routine;
 
     float leftPosX = 0f;
     float rightPosX = 0f;
@@ -16,6 +18,14 @@ public class BackgroundScrolling : MonoBehaviour
 
     private void Awake()
     {
+        for (int i = 0; i < backgrounds.Length; i++)
+            points[i] = backgrounds[i].transform.position;
+
+        Init();
+    }
+
+    public void Init()
+    {
         yScreenHalfSize = Camera.main.orthographicSize;
         xScreenHalfSize = yScreenHalfSize * Camera.main.aspect;
 
@@ -24,13 +34,16 @@ public class BackgroundScrolling : MonoBehaviour
 
         for (int i = 0; i < backgrounds.Length; i++)
         {
-            points[i] = backgrounds[i].transform.position;
+            backgrounds[i].position = points[i];
         }
+
+        if (routine != null )
+            StopCoroutine(routine);
     }
 
     public void Scrolling()
     {
-        StartCoroutine(ScrollingRoutine());        
+        routine = StartCoroutine(ScrollingRoutine());        
     }
 
     IEnumerator ScrollingRoutine()
@@ -60,7 +73,7 @@ public class BackgroundScrolling : MonoBehaviour
         backgrounds[1] = backgrounds[2];
         backgrounds[2] = temp;
 
-        for (int i =0; i<points.Length; i++)
+        for (int i =0; i<points.Count; i++)
             backgrounds[i].transform.position = points[i];
 
         GameManager.instance.StartBattle();

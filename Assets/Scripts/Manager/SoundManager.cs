@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
@@ -11,7 +8,6 @@ public class SoundManager : MonoBehaviour
     public AudioClip bgmClip;
     public float bgmVolume;
     AudioSource bgmPlayer;
-    AudioHighPassFilter bgmEffect;
 
     [Header("SFX")]
     public AudioClip[] sfxClips;
@@ -31,6 +27,13 @@ public class SoundManager : MonoBehaviour
 
     public void Init()
     {
+        //배경음악, 효과음 사운드 정보가 둘중 하나라도 없으면 그냥 초기화
+        if (PlayerPrefs.HasKey("Bgm") && PlayerPrefs.HasKey("Sfx"))
+        {
+            bgmVolume = PlayerPrefs.GetFloat("Bgm");
+            sfxVolume = PlayerPrefs.GetFloat("Sfx");
+        }
+
         //bgm 초기화
         GameObject bgmObject = new GameObject("bgmPlayer");
         bgmObject.transform.parent = transform;
@@ -39,7 +42,6 @@ public class SoundManager : MonoBehaviour
         bgmPlayer.loop = true;
         bgmPlayer.volume = bgmVolume;
         bgmPlayer.clip = bgmClip;
-        bgmEffect = Camera.main.GetComponent<AudioHighPassFilter>();
 
         //sfx 초기화
         GameObject sfxObject = new GameObject("sfxPlayer");
@@ -64,11 +66,6 @@ public class SoundManager : MonoBehaviour
             bgmPlayer.Stop();
     }
 
-    public void BgmEffect(bool isPlay)
-    {
-        bgmEffect.enabled = isPlay;
-    }
-
     //효과음 재생
     public void PlaySfx(Sfx sfx)
     {
@@ -89,5 +86,29 @@ public class SoundManager : MonoBehaviour
             sfxPlayers[loopIndex].Play();
             break;
         }
+    }
+
+    //사운드 설정에서 배경음악과 효과음 크기조절
+    public void SetBgm(float volume)
+    {
+        bgmVolume = Mathf.Round(volume) / 10.0f;
+        PlayerPrefs.SetFloat("Bgm", bgmVolume);
+
+        bgmPlayer.volume = bgmVolume;
+    }
+
+    private bool SetAudio = false;
+    public void SetSfx(float volume)
+    {
+        sfxVolume = Mathf.Round(volume) / 10.0f;
+        PlayerPrefs.SetFloat("Sfx", sfxVolume);
+
+        for (int index = 0; index < sfxPlayers.Length; index++)
+            sfxPlayers[index].volume = sfxVolume;
+
+        if (SetAudio)
+            PlaySfx(Sfx.Melee);
+
+        SetAudio = true;
     }
 }
