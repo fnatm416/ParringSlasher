@@ -126,7 +126,8 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 4cf5dd7a465593345bf71c0d06f39446, type: 2}
   - {fileID: 7400000, guid: a4920c1a1519cc742975e46dfa9ec022, type: 2}
   damage: 10
-  _health: 10
+  health: 10
+  _currentHealth: 0
   hitbox: {fileID: 3403901055340038767}
   hitpoint: {fileID: 7027079432889646011}
   attackDelay: 3

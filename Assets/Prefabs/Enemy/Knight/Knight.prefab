@@ -187,7 +187,8 @@ MonoBehaviour:
   attackAnimations:
   - {fileID: 7400000, guid: f478e5591459f1b4ea94d88bd1ba772f, type: 2}
   damage: 10
-  _health: 10
+  health: 10
+  _currentHealth: 0
   hitbox: {fileID: 5526320081828863413}
   hitpoint: {fileID: 243024885415210646}
   attackDelay: 2

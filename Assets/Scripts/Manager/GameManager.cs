@@ -106,7 +106,6 @@ public class GameManager : MonoBehaviour
 
         result_ui.gameObject.SetActive(false);
         GamePauseOff();
-        SetRandomEnemy();
         NextStage();
     }
 
@@ -143,29 +142,15 @@ public class GameManager : MonoBehaviour
     //적 세팅
     public void SetEnemy()
     {
-        //nextEnemy로 등록되어있던 몬스터를 currentEnemy로 소환
-        if (nextEnemy == null)
-            SetRandomEnemy();
-
-        nextEnemy.GetComponent<Enemy>().enabled = false;
-        currentEnemy = Instantiate(nextEnemy, map.backgrounds[2].transform, false);
-        nextEnemy.transform.position = new Vector2(1.0f, nextEnemy.transform.position.y);
-
-        SetRandomEnemy();
-    }
-
-    //랜덤몬스터 생성
-    public void SetRandomEnemy()
-    {
         //스테이지가 2단위로 오를수록 나오는 몬스터 추가되고
         //4단위마다 이전 몬스터가 등장하지않음
         int min = Mathf.Max(0, Mathf.Clamp(stage / 4, 0, enemys.Length - 1));
         int max = Mathf.Min(enemys.Length, stage / 2);
         int random = Random.Range(min, max);
-        nextEnemy = enemys[random];
+        //int => enum => string
+        currentEnemy = PoolManager.instance.Get(((EnemyName)random).ToString()).GetComponent<Enemy>();
+        currentEnemy.transform.SetParent(map.backgrounds[2].transform, false);
     }
-
-    
 
     public void Pause()
     {

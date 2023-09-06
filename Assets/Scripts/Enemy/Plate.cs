@@ -7,6 +7,14 @@ public class Plate : Enemy
 {
     private Sequence sequence;
 
+    protected override void Update()
+    {
+        base.Update();
+
+        if (isDie)
+            sequence.Kill();
+    }
+
     //공격자세를 잡고나서 지연
     public void OnAttackDelay(float delay)
     {

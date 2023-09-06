@@ -10912,6 +10912,7 @@ MonoBehaviour:
   - {fileID: 2583256598187206101, guid: a29d512f4bd7cd34dab7eccb6b0bdde8, type: 3}
   - {fileID: 8191551475164148199, guid: 7455f129db6cf7f43beebdc0adae2b9e, type: 3}
   - {fileID: 4153500922525635048, guid: 9ee6a5f23ff49a64aaafc554f35bd670, type: 3}
+  - {fileID: 9148284441419885049, guid: 3a553466e24ab7d4f9e9e35a7260d20b, type: 3}
 --- !u!1 &2024104689
 GameObject:
   m_ObjectHideFlags: 0
@@ -11449,19 +11450,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5299355007218718425}
   m_CullTransparentMesh: 1
---- !u!114 &1003982675824072438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2597550460547581643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b078b424e9f11de41baf12bc3cb12e46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpGage: {fileID: 2430066518430452922}
 --- !u!224 &1007676319607028894
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12385,7 +12373,6 @@ GameObject:
   m_Component:
   - component: {fileID: 361453237053393472}
   - component: {fileID: 4402243707922858277}
-  - component: {fileID: 1003982675824072438}
   m_Layer: 5
   m_Name: 1_ InGame
   m_TagString: Untagged
@@ -14807,20 +14794,6 @@ RectTransform:
   m_AnchoredPosition: {x: 384, y: -412.5}
   m_SizeDelta: {x: 768, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6812684620214599686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8401874883273544902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a08008a225201a04283d669cd71dc415, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentScore: {fileID: 223651195891701359}
-  highScore: {fileID: 4772028548176097947}
 --- !u!114 &6860375384359912481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14937,6 +14910,10 @@ PrefabInstance:
       propertyPath: panelEffect
       value: 
       objectReference: {fileID: 3493058350669735438}
+    - target: {fileID: 4399789912900061159, guid: 64c923ba9b5f154498862e54b80fe930, type: 3}
+      propertyPath: _attackSpeed
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4399789912900061159, guid: 64c923ba9b5f154498862e54b80fe930, type: 3}
       propertyPath: attackButton
       value: 
@@ -16157,7 +16134,6 @@ GameObject:
   - component: {fileID: 1891559502751626317}
   - component: {fileID: 1565488556254900959}
   - component: {fileID: 6179596923252129979}
-  - component: {fileID: 6812684620214599686}
   m_Layer: 5
   m_Name: 4_Result
   m_TagString: Untagged

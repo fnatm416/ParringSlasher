@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     public AnimationClip[] attackAnimations;    //공격 애니메이션들을 등록(애니메이션길이를 0:10 통일)
-    public GameObject slashEffect;
     public Transform hitbox;    //공격판정을 일으킬 히트박스
     public Transform hitpoint;  //피격판정을 일으킬 지점
     public PanelEffect panelEffect; //피격 및 패링 이펙트를 출력시킬 패널
@@ -14,8 +13,8 @@ public class Player : MonoBehaviour
     private CameraShake cameraShake;    //카메라효과를 주기위한 카메라의 컴포넌트
 
     public float damage; //공격한대당 입히는 데미지
-    public float _attackSpeed;
-    public float attackSpeed   //한번 공격하는데 걸리는 시간 (낮을수록 빠르게 공격)
+    public float _attackSpeed;  //한번 공격하는데 걸리는 시간 (낮을수록 빠르게 공격)
+    public float attackSpeed
     {
         get { return _attackSpeed; }
         set { _attackSpeed = value; SetAttackSpeed(value); }
@@ -25,7 +24,7 @@ public class Player : MonoBehaviour
     public float guardCoolTime; //막기 재사용 대기시간
 
     private Animator anim;  //플레이어 애니메이터
-    private PlayerInput pi; //플레이어 인풋
+    private PlayerInput input; //플레이어 인풋
 
     private bool isDie = false; //플레이어가 죽었는지
     private bool isAttack = false;  //플레이어가 공격 중인지
@@ -37,7 +36,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        pi = GetComponent<PlayerInput>();
+        input = GetComponent<PlayerInput>();
 
         SetAttackSpeed(attackSpeed);
         cameraShake = Camera.main.GetComponent<CameraShake>();
@@ -108,15 +107,16 @@ public class Player : MonoBehaviour
     }
 
     //피격된 적에게 이펙트 발생
-    IEnumerator SlashEffect(Vector2 pos)
+    IEnumerator SlashEffect(Vector2 position)
     {
         float random = Random.Range(0, 360.0f);
-        GameObject effect = Instantiate(slashEffect, pos, Quaternion.Euler(0, 0, random));
+        GameObject effect = PoolManager.instance.Get("Slash");
+        effect.transform.SetPositionAndRotation(position, Quaternion.Euler(0, 0, random));
         while (effect.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
         {
             yield return null;
         }
-        Destroy(effect);
+        PoolManager.instance.Return(effect);
     }
 
     //공격이 끝날 때 실행
@@ -228,8 +228,8 @@ public class Player : MonoBehaviour
     public void ControlEnable()
     {
         //공격 및 방어가 가능한 상태
-        pi.actions["Attack"].Enable();
-        pi.actions["Guard"].Enable();
+        input.actions["Attack"].Enable();
+        input.actions["Guard"].Enable();
 
         Init();
         anim.SetBool("IsMove", false);
@@ -238,8 +238,8 @@ public class Player : MonoBehaviour
     public void ControlDisable()
     {
         //공격 및 방어를 못하게 막기
-        pi.actions["Attack"].Disable();
-        pi.actions["Guard"].Disable();
+        input.actions["Attack"].Disable();
+        input.actions["Guard"].Disable();
 
         if (isDie == false)
             anim.SetBool("IsMove", true);

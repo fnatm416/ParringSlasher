@@ -8,6 +8,14 @@ public class Knight : Enemy
 {
     private Sequence sequence;
 
+    protected override void Update()
+    {
+        base.Update();
+
+        if (isDie)
+            sequence.Kill();
+    }
+
     //공격자세를 잡고나서 지연
     public void OnAttackDelay(float delay)
     {
@@ -35,13 +43,5 @@ public class Knight : Enemy
         sequence = DOTween.Sequence();
         sequence.Append(transform.DOMoveX(endPos, length * (4/8f)).SetEase(Ease.OutExpo));
         sequence.Append(transform.DOMoveX(startPos, length * (2/8f)).SetEase(Ease.InExpo));
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-
-        if (isDie)
-            sequence.Kill();
     }
 }

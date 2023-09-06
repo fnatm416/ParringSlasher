@@ -8,35 +8,32 @@ public class Enemy : MonoBehaviour
     public AnimationClip[] attackAnimations;
 
     public float damage;  //공격력
-    public float _health;  //체력
-    public float health
+    public float health;  //체력
+    public float _currentHealth;  //체력
+    public float currentHealth
     {
-        get { return _health; }
+        get { return _currentHealth; }
         set
         {
-            _health = value;
-            if (_health <= 0)
+            _currentHealth = value;
+            if (_currentHealth <= 0)
             {
                 isDie = true;
                 anim.SetTrigger("Die");
-            }    
+            }
         }
     }
     public Transform hitbox;   //공격판정을 일으킬 히트박스
     public Transform hitpoint;  //피격판정을 일으킬 지점
     public float attackDelay;   //공격 재사용 대기시간
     public int score;   //죽였을때 주는 점수
+    public bool isDie { get;  protected set; }
 
     protected bool canAttack = false;
-    protected Coroutine attackRoutine = null;
+    protected Coroutine routine = null;
     protected SpriteRenderer spr;
 
-    protected bool _isDie = false;
-    public bool isDie
-    {
-        get { return _isDie; }
-        protected set { _isDie = value; }
-    }
+    
     #endregion
 
     #region AI
@@ -44,6 +41,17 @@ public class Enemy : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         spr = GetComponent<SpriteRenderer>();
+    }
+
+    void OnEnable()
+    {
+        isDie = false;
+        currentHealth = health;
+        canAttack = false;
+
+        if (routine != null)
+            StopCoroutine(routine);
+        routine = StartCoroutine(AttackCoolTime());
     }
 
     void Start()
@@ -61,7 +69,7 @@ public class Enemy : MonoBehaviour
     #region Attack
     public void Attack()
     {
-        canAttack = false; 
+        canAttack = false;
         anim.SetTrigger("Attack");
     }
 
@@ -98,7 +106,7 @@ public class Enemy : MonoBehaviour
     public void OnHit(float damage)
     {
         if (isDie == false)
-            health -= damage;
+            currentHealth -= damage;
     }
 
     //죽을 때 코루틴 호출
@@ -107,11 +115,11 @@ public class Enemy : MonoBehaviour
         GameManager.instance.currentScore += score;
         StartCoroutine(DeathRoutine());
     }
-   
+
     IEnumerator DeathRoutine()
     {
         yield return new WaitForSeconds(1.0f);
-        Destroy(gameObject);
+        PoolManager.instance.Return(this.gameObject);
         GameManager.instance.NextStage();
     }
     #endregion

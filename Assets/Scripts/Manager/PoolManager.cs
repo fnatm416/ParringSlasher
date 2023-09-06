@@ -3,31 +3,38 @@ using System.Collections.Generic;
 using UnityEditor.UI;
 using UnityEngine;
 
+public enum EnemyName
+{
+    Knight,
+    Samurai,
+    Warrior,
+    Plate,
+    King
+}
+
 public class PoolManager : MonoBehaviour
 {
     public static PoolManager instance = null;
 
     public GameObject[] prefabs;
-    List<GameObject>[] pools;
+    Dictionary<string, List<GameObject>> pools = new Dictionary<string, List<GameObject>>();
 
     void Awake()
     {
         if (instance == null)
             instance = this;
 
-        pools = new List<GameObject>[prefabs.Length];
-
-        for (int index = 0; index < pools.Length; index++)
+        for (int index = 0; index < prefabs.Length; index++)
         {
-            pools[index] = new List<GameObject>();
+            pools[prefabs[index].name] = new List<GameObject>();
         }
     }
 
-    public GameObject Get(int index)
+    public GameObject Get(string name)
     {
         GameObject select = null;
 
-        foreach (GameObject item in pools[index])
+        foreach (GameObject item in pools[name])
         {
             //놀고있는 오브젝트를 select에 할당
             if (!item.activeSelf)
@@ -41,12 +48,23 @@ public class PoolManager : MonoBehaviour
         //만약 놀고있는 오브젝트를 못찾았다면 새롭게 생성
         if (!select)
         {
-            select = Instantiate(prefabs[index], this.transform);
-            //새롭게 생성된 오브젝트를 풀에 등록
-            pools[index].Add(select);
+            for(int index = 0; index < prefabs.Length; index++)
+            {
+                if (prefabs[index].name == name)
+                {
+                    select = Instantiate(prefabs[index], this.transform);
+                    //새롭게 생성된 오브젝트를 풀에 등록
+                    pools[prefabs[index].name].Add(select);
+                }
+            }
         }
 
         return select;
     }
 
+    public void Return(GameObject item)
+    {
+        item.SetActive(false);
+        item.transform.SetParent(this.transform);
+    }
 }

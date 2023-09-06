@@ -7,6 +7,14 @@ public class Samurai : Enemy
     private Sequence sequence;
     private int count = 0;
 
+    protected override void Update()
+    {
+        base.Update();
+
+        if (isDie)
+            sequence.Kill();
+    }
+
     //공격자세를 잡고나서 지연
     public void OnAttackDelay(float delay)
     {
@@ -40,13 +48,5 @@ public class Samurai : Enemy
         sequence.Append(transform.DOMoveX(startPos, length * (1 / 5f)).SetEase(Ease.InExpo));
 
         count = 0;
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-
-        if (isDie)
-            sequence.Kill();
     }
 }
