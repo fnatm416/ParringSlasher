@@ -6,7 +6,10 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance = null;
 
-    public Image hpGage;
+    public RectTransform result_ui; //결과창 ui
+    public RectTransform pause_ui;  //게임 일시중지 ui
+    public Image hpGage;    //hp바
+    public Text scoreText;  //현재 점수 텍스트
 
     [Header("Result")]
     public Text currentScore;
@@ -46,9 +49,9 @@ public class UIManager : MonoBehaviour
         UpdateUI();
     }
 
-    //최신화가 필요한 UI 업데이트
+    //UI최신화
     void UpdateUI()
-    {
+    {       
         //현재 체력 업데이트
         hpGage.fillAmount = GameManager.instance.currentHp / GameManager.instance.maxHp;
 
@@ -64,17 +67,17 @@ public class UIManager : MonoBehaviour
             sfxHandle.sprite = sfxHandleImages[0];
     }
 
+    //Pause 창에서 버튼 이미지 교체
     public void SwitchControl()
-    {
-        //이미지를 교체
+    {      
         Sprite sprtie = icons[0].sprite;
         icons[0].sprite = icons[1].sprite;
         icons[1].sprite = sprtie;
     }
 
+    //게임오버 후 점수 최신화
     public void ShowScore()
-    {
-        //게임오버 후 점수 최신화
+    {       
         currentScore.text = GameManager.instance.currentScore.ToString("N0");
         highScore.text = PlayerPrefs.GetInt("HighScore").ToString("N0");
     }

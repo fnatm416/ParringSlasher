@@ -24,6 +24,7 @@ public class BackgroundScrolling : MonoBehaviour
         Init();
     }
 
+    //초기화
     public void Init()
     {
         yScreenHalfSize = Camera.main.orthographicSize;
@@ -41,11 +42,13 @@ public class BackgroundScrolling : MonoBehaviour
             StopCoroutine(routine);
     }
 
+    //외부에서 스크롤링 호출
     public void Scrolling()
     {
         routine = StartCoroutine(ScrollingRoutine());        
     }
 
+    //맵 스크롤링
     IEnumerator ScrollingRoutine()
     {
         Transform currentPlat = backgrounds[1];

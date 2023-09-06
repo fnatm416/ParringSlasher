@@ -6,7 +6,7 @@ public class CameraShake : MonoBehaviour
 {
     private float ShakeAmount;
     private float ShakeTime;
-    private Vector3 initialPosition;
+    private Vector3 initPos;
 
     private int priority;   //낮을수록 우선순위가 높음(이전 쉐이크를 상쇄)
     private bool isShaking;
@@ -17,7 +17,7 @@ public class CameraShake : MonoBehaviour
 
     void Start()
     {
-        initialPosition = Camera.main.transform.position;
+        initPos = Camera.main.transform.position;
     }
 
     public void VibrateForTime(float amount ,float time, int priority)
@@ -35,28 +35,27 @@ public class CameraShake : MonoBehaviour
             shakeRoutine = StartCoroutine(Vibrate());
         }
     }
-
+    
+    //카메라셰이크
     IEnumerator Vibrate()
     {
-        transform.position = initialPosition;
+        transform.position = initPos;
 
         while (ShakeTime > 0 && isPause == false)
         {
             yield return null;
-            transform.position = Random.insideUnitSphere * ShakeAmount + initialPosition;
+            transform.position = Random.insideUnitSphere * ShakeAmount + initPos;
             ShakeTime -= Time.deltaTime;
         }
 
         ShakeTime = 0.0f;
         isShaking = false;
-        transform.position = initialPosition;
+        transform.position = initPos;
     }
 
+    //카메라 움직임을 On/Off
     public void PauseVibrate(bool isPlay)
     {
-        if (isPlay == true)
-            isPause = true;
-        else if (isShaking == false)
-            isPause = false;
+        isPause = isPlay;
     }
 }

@@ -5924,7 +5924,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3650bee0abccadb4d8a2d0530eb39b6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  result_ui: {fileID: 1891559502751626317}
+  pause_ui: {fileID: 2236182295688626205}
   hpGage: {fileID: 2430066518430452922}
+  scoreText: {fileID: 384386273784871121}
   currentScore: {fileID: 223651195891701359}
   highScore: {fileID: 4772028548176097947}
   bgmValue: {fileID: 3345778882603837948}
@@ -7376,9 +7379,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mobileController: {fileID: 5500113071409318136}
-  scoreText: {fileID: 384386273784871121}
-  result_ui: {fileID: 1891559502751626317}
-  pause_ui: {fileID: 2236182295688626205}
   player: {fileID: 580425840}
   map: {fileID: 2077283926}
   cameraShake: {fileID: 519420033}
@@ -7389,7 +7389,6 @@ MonoBehaviour:
   - {fileID: 2846602352359202221, guid: 7455f129db6cf7f43beebdc0adae2b9e, type: 3}
   - {fileID: 726546887777327046, guid: 9ee6a5f23ff49a64aaafc554f35bd670, type: 3}
   currentEnemy: {fileID: 0}
-  nextEnemy: {fileID: 0}
   maxHp: 50
   _currentHp: 0
   currentScore: 0

@@ -3,13 +3,12 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    #region Attribute
     protected Animator anim;
     public AnimationClip[] attackAnimations;
 
     public float damage;  //공격력
     public float health;  //체력
-    public float _currentHealth;  //체력
+    public float _currentHealth;  //현재 체력
     public float currentHealth
     {
         get { return _currentHealth; }
@@ -33,25 +32,10 @@ public class Enemy : MonoBehaviour
     protected Coroutine routine = null;
     protected SpriteRenderer spr;
 
-    
-    #endregion
-
-    #region AI
     void Awake()
     {
         anim = GetComponent<Animator>();
         spr = GetComponent<SpriteRenderer>();
-    }
-
-    void OnEnable()
-    {
-        isDie = false;
-        currentHealth = health;
-        canAttack = false;
-
-        if (routine != null)
-            StopCoroutine(routine);
-        routine = StartCoroutine(AttackCoolTime());
     }
 
     void Start()
@@ -64,9 +48,21 @@ public class Enemy : MonoBehaviour
         if (isDie == false && canAttack == true)
             Attack();
     }
-    #endregion
+
+    //초기화
+    public void Init()
+    {
+        isDie = false;
+        currentHealth = health;
+        canAttack = false;
+
+        if (routine != null)
+            StopCoroutine(routine);
+        routine = StartCoroutine(AttackCoolTime());
+    }
 
     #region Attack
+    //공격 실행
     public void Attack()
     {
         canAttack = false;

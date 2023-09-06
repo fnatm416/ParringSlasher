@@ -30,15 +30,13 @@ public class King : Enemy
         yield return new WaitForSeconds(delay);
         anim.speed = 1;
 
-        if (count == 1)
-            Slash1();
-        else if (count == 2)
-            Slash2();
-        else if (count == 3)
-            Slash3();
+        if (count < 3)
+            Slash();
+        else if (count >= 3)
+            FinalSlash();
     }
 
-    public void Slash1()
+    public void Slash()
     {
         spr.sortingOrder = 2;
 
@@ -51,20 +49,7 @@ public class King : Enemy
         sequence.Append(transform.DOMoveX(startPos, length * (2 / 6f)).SetEase(Ease.InExpo));
     }
 
-    public void Slash2()
-    {
-        spr.sortingOrder = 2;
-
-        //트윈으로 왕복    
-        float length = attackAnimations[count - 1].length;
-        float startPos = 1.0f;
-        float endPos = startPos - 0.5f;
-        sequence = DOTween.Sequence();
-        sequence.Append(transform.DOMoveX(endPos, length * (4 / 6f)).SetEase(Ease.OutExpo));
-        sequence.Append(transform.DOMoveX(startPos, length * (2 / 6f)).SetEase(Ease.InExpo));
-    }
-
-    public void Slash3()
+    public void FinalSlash()
     {
         spr.sortingOrder = 2;
 
@@ -73,7 +58,7 @@ public class King : Enemy
         float startPos = 1.0f;
         float endPos = startPos + 0.5f;
         sequence = DOTween.Sequence();
-        
+
         sequence.Append(transform.DOMoveX(endPos, length * (2 / 6f)).SetEase(Ease.Linear));
         sequence.AppendCallback(() =>
         {
@@ -89,5 +74,5 @@ public class King : Enemy
         });
     }
 
-    
+
 }

@@ -3,6 +3,8 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.InputSystem;
 
+
+
 public class Player : MonoBehaviour
 {
     public AnimationClip[] attackAnimations;    //공격 애니메이션들을 등록(애니메이션길이를 0:10 통일)
@@ -42,9 +44,9 @@ public class Player : MonoBehaviour
         cameraShake = Camera.main.GetComponent<CameraShake>();
     }
 
+    //초기화
     public void Init()
-    {
-        //초기화
+    {      
         isDie = false;
         isAttack = false;
         isGuard = false;
@@ -71,6 +73,7 @@ public class Player : MonoBehaviour
             {
                 isAttack = true;
 
+                //3가지 공격중에 랜덤으로 한가지 발동
                 int random = Random.Range(1, attackAnimations.Length + 1); // 랜덤한 정수 생성 (1부터 numberOfAttacks까지)
                 anim.SetInteger("AttackType", random); // 애니메이터의 AttackType 파라미터에 랜덤한 값 전달
                 anim.SetTrigger("Attack");
@@ -237,7 +240,7 @@ public class Player : MonoBehaviour
 
     public void ControlDisable()
     {
-        //공격 및 방어를 못하게 막기
+        //공격 및 방어를 못하는 상태
         input.actions["Attack"].Disable();
         input.actions["Guard"].Disable();
 

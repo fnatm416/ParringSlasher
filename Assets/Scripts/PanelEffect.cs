@@ -17,18 +17,21 @@ public class PanelEffect : MonoBehaviour
         panel = GetComponent<Image>();  
     }
 
+    //피격 컬러로 플래시효과
     public void OnHit()
     {
         panel.color = hitColor;
         StartCoroutine(FlashRoutine(hitColor));
     }
 
+    //패링 컬러로 플래시효과
     public void OnParring()
-    {
+    {       
         panel.color = parringColor;
         StartCoroutine(FlashRoutine(parringColor));
     }
 
+    //플래시효과 실행
     IEnumerator FlashRoutine(Color color)
     {
         float elapsedTime = 0;

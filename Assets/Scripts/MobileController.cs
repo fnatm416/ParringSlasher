@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class MobileController : MonoBehaviour
 {
-    public Transform[] presets;
-
+    //버튼 좌우반전 여부를 관리
+    public Transform[] presets; 
     private int currentPreset;
 
     private void Awake()
@@ -15,9 +15,9 @@ public class MobileController : MonoBehaviour
             SwitchControl();    
     }
 
+    //프리셋 내의 모든 조작 활성화
     public void ControlEnable()
     {
-        //프리셋 내의 모든 조작컴포넌트 활성화
         foreach (Transform preset in presets)
         {
             foreach (Button button in preset.GetComponentsInChildren<Button>())
@@ -28,9 +28,9 @@ public class MobileController : MonoBehaviour
         }
     }
 
+    //프리셋 내의 모든 조작 비활성화
     public void ControlDisable()
-    {
-        //프리셋 내의 모든 조작컴포넌트 비활성화
+    {        
         foreach (Transform preset in presets)
         {
             foreach (Button button in preset.GetComponentsInChildren<Button>())
@@ -41,9 +41,9 @@ public class MobileController : MonoBehaviour
         }
     }
 
+    //프리셋 교체
     public void SwitchControl()
-    {
-        //프리셋 교체
+    {       
         if (currentPreset == 0)
             currentPreset = 1;
         else if (currentPreset == 1)

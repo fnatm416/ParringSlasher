@@ -7,17 +7,12 @@ public class GameManager : MonoBehaviour
 
     public MobileController mobileController;
 
-    public Text scoreText;  //현재 점수를 인게임에 표시
-    public RectTransform result_ui; //결과창 ui
-    public RectTransform pause_ui;  //게임 일시중지 ui
-
     public GameObject player;   //플레이어
     public BackgroundScrolling map; //스크롤링할 맵
     public CameraShake cameraShake; //카메라쉐이크
 
     public Enemy[] enemys;  //적을 종류별로 모아놓은 배열
     public Enemy currentEnemy; //현재 상대하고있는 적
-    public Enemy nextEnemy; //다음에 상대할 적
 
     public int stage { get; private set; }  //현재 스테이지
     public float maxHp; //플레이어의 최대체력(소진하면 게임오버)
@@ -43,19 +38,9 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        Init();       
-    }
-
-    public void Init()
-    {
-        //싱글톤
         if (instance == null)
             instance = this;
-
-        //저장된 최고점수를 불러온다. (없으면 0점)
-        highScore = PlayerPrefs.GetInt("HighScore");
     }
-
 
     void Start()
     {
@@ -65,7 +50,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         //스코어 최신화
-        scoreText.text = currentScore.ToString("N0");
+        UIManager.instance.scoreText.text = currentScore.ToString("N0");
     }
 
     //적과 대치할때 스크립트 활성화
@@ -80,23 +65,23 @@ public class GameManager : MonoBehaviour
         player.GetComponent<Player>().ControlEnable();
         if (mobileController.gameObject.activeSelf) { mobileController.ControlEnable(); }
         currentEnemy.GetComponent<Enemy>().enabled = true;
-
+        currentEnemy.Init();
     }
 
     //게임시작할 때마다 초기화
     public void GameStart()
     {
+        //저장된 최고점수를 불러온다. (없으면 0점)
+        highScore = PlayerPrefs.GetInt("HighScore");
+        stage = 0;
+
         if (currentEnemy != null)
-            Destroy(currentEnemy.gameObject);
-
+            PoolManager.instance.Return(currentEnemy.gameObject);
         currentEnemy = null;
-        nextEnemy = null;
-
-        map.Init();
 
         SoundManager.instance.PlayBgm(true);
 
-        stage = 0;
+        map.Init();
 
         currentHp = maxHp;
         currentScore = 0;
@@ -104,7 +89,7 @@ public class GameManager : MonoBehaviour
         gameSpeed = 1.0f;
         Time.timeScale = gameSpeed;
 
-        result_ui.gameObject.SetActive(false);
+        UIManager.instance.result_ui.gameObject.SetActive(false);
         GamePauseOff();
         NextStage();
     }
@@ -119,7 +104,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("HighScore", currentScore);
 
         UIManager.instance.ShowScore();
-        result_ui.gameObject.SetActive(true);
+        UIManager.instance.result_ui.gameObject.SetActive(true);
     }
 
     //적을 물리치고나면 다음 적에게 이동
@@ -152,6 +137,7 @@ public class GameManager : MonoBehaviour
         currentEnemy.transform.SetParent(map.backgrounds[2].transform, false);
     }
 
+    //게임 일시중지
     public void Pause()
     {
         if (isPause == false)
@@ -159,12 +145,11 @@ public class GameManager : MonoBehaviour
         else if (isPause == true)
             GamePauseOff();
     }
-
-    //게임 일시중지
+   
     public void GamePauseOn()
     {
         isPause = true;
-        pause_ui.gameObject.SetActive(true);
+        UIManager.instance.pause_ui.gameObject.SetActive(true);
         Time.timeScale = 0;
         cameraShake.PauseVibrate(true);
     }
@@ -172,7 +157,7 @@ public class GameManager : MonoBehaviour
     public void GamePauseOff()
     {
         isPause = false;
-        pause_ui.gameObject.SetActive(false);
+        UIManager.instance.pause_ui.gameObject.SetActive(false);
         Time.timeScale = gameSpeed;
         cameraShake.PauseVibrate(false);
     }
