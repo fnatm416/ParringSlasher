@@ -3,8 +3,6 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.InputSystem;
 
-
-
 public class Player : MonoBehaviour
 {
     public AnimationClip[] attackAnimations;    //공격 애니메이션들을 등록(애니메이션길이를 0:10 통일)

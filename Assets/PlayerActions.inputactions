@@ -36,7 +36,18 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "69c20666-2b44-4c12-8c43-616793cafaa4",
+                    "id": "85a0f6f0-49a5-4bf0-84f5-10c6348db03a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f72962eb-7c35-4744-92e6-2699fe2e4e1e",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
@@ -81,6 +92,17 @@
                 {
                     "name": "",
                     "id": "76aba5b0-6c3f-4bf4-b4d7-1950101d4aaa",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Guard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "60ecb758-ccaa-4526-b287-dc864a31a9d7",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
