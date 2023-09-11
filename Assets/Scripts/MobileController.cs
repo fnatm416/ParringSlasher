@@ -5,14 +5,14 @@ using UnityEngine.UI;
 public class MobileController : MonoBehaviour
 {
     //버튼 좌우반전 여부를 관리
-    public Transform[] presets; 
+    public Transform[] presets;
     private int currentPreset;
 
     private void Awake()
     {
         //플레이어가 조작키 반전설정한 이력있으면 불러오기
         if (PlayerPrefs.GetInt("Control") == 1)
-            SwitchControl();    
+            SwitchControl();
     }
 
     //프리셋 내의 모든 조작 활성화
@@ -30,7 +30,7 @@ public class MobileController : MonoBehaviour
 
     //프리셋 내의 모든 조작 비활성화
     public void ControlDisable()
-    {        
+    {
         foreach (Transform preset in presets)
         {
             foreach (Button button in preset.GetComponentsInChildren<Button>())
@@ -43,7 +43,7 @@ public class MobileController : MonoBehaviour
 
     //프리셋 교체
     public void SwitchControl()
-    {       
+    {
         if (currentPreset == 0)
             currentPreset = 1;
         else if (currentPreset == 1)

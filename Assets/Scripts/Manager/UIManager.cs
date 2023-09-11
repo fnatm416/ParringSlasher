@@ -25,7 +25,8 @@ public class UIManager : MonoBehaviour
     public Sprite[] sfxHandleImages;
     [Header("Control")]
     public MobileController mobileController;
-    public Image[] icons;
+    public Transform switchControl;
+    public Image[] moibleIcons;
 
     void Awake()
     {
@@ -41,6 +42,13 @@ public class UIManager : MonoBehaviour
         {
             bgmValue.value = PlayerPrefs.GetFloat("Bgm") * 10.0f;
             sfxValue.value = PlayerPrefs.GetFloat("Sfx") * 10.0f;
+        }
+
+        if (SystemInfo.deviceType != DeviceType.Handheld)
+        {
+            //모바일 환경이 아니라면 모바일UI를 비활성화
+            mobileController.gameObject.SetActive(false);
+            switchControl.gameObject.SetActive(false);
         }
     }
 
@@ -69,10 +77,13 @@ public class UIManager : MonoBehaviour
 
     //Pause 창에서 버튼 이미지 교체
     public void SwitchControl()
-    {      
-        Sprite sprtie = icons[0].sprite;
-        icons[0].sprite = icons[1].sprite;
-        icons[1].sprite = sprtie;
+    {
+        //레이아웃 그룹에서 위치를 교환
+        int left = moibleIcons[0].transform.GetSiblingIndex();
+        int right = moibleIcons[1].transform.GetSiblingIndex();
+
+        moibleIcons[0].transform.SetSiblingIndex(right);
+        moibleIcons[1].transform.SetSiblingIndex(left);
     }
 
     //게임오버 후 점수 최신화
