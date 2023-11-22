@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _currentHp = value;
-            //1. 플레이어에게 게임오버를 전달
+            //플레이어에게 게임오버를 전달
             if (_currentHp <= 0)
             {
                 currentEnemy.GetComponent<Enemy>().enabled = false;
