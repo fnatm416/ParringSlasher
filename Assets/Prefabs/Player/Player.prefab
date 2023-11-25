@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2420942474577031405}
   - component: {fileID: 1231101496276993880}
   - component: {fileID: 7623862379878246905}
+  - component: {fileID: 38296692782643828}
   - component: {fileID: 4399789912900061159}
   m_Layer: 0
   m_Name: Player
@@ -155,6 +156,124 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.73, y: 1.2}
   m_EdgeRadius: 0
+--- !u!114 &38296692782643828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1584016145950896853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 756d5cbe622472f4da0e69815a30a2d8, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4399789912900061159}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f9b7c074-f0d6-49ed-9e29-2b6fd34328af
+    m_ActionName: Player/Attack[/Mouse/leftButton,/Keyboard/leftArrow,/Keyboard/a]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4399789912900061159}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: Guard
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 013312f1-c11a-476e-9df0-97cf45a84f8c
+    m_ActionName: Player/Guard[/Mouse/rightButton,/Keyboard/rightArrow,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: Pause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0d081744-617b-493b-a50b-52973ffefcbb
+    m_ActionName: Player/Pause[/Keyboard/p,/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2802b0ab-a66c-4e8c-a708-6269b250af99
+    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ca873e82-a9a2-41ce-8e36-d04af02290d7
+    m_ActionName: UI/Submit[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9d06f3cc-f42e-4768-ae82-676769f245e0
+    m_ActionName: UI/Cancel[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: af8e1211-e534-4521-960e-9e457dcfe87b
+    m_ActionName: UI/Point[/Mouse/position,/Pen/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4e5df9e8-8b6f-4909-9611-2b44bdcbdbb4
+    m_ActionName: UI/Click[/Mouse/leftButton,/Pen/tip]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 095c2f1a-de10-45a3-a9a2-726a54b70101
+    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0ed2232e-d19a-4cce-b22a-c0f172e444b6
+    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3eadca08-25f5-4c93-9183-de063802f7c4
+    m_ActionName: UI/RightClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 93cd97c1-d193-40e6-b5a0-43791bdfb5a6
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5e0c0eea-15f1-41a7-97e4-8a9989e39db1
+    m_ActionName: UI/TrackedDeviceOrientation
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!114 &4399789912900061159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,12 +290,13 @@ MonoBehaviour:
   - {fileID: 7400000, guid: d4ab2818b0aa34040b2eeceb747d9438, type: 2}
   - {fileID: 7400000, guid: e87cb7597ff586348a38cc9df8c0e9b9, type: 2}
   - {fileID: 7400000, guid: cdcc33710d60aaf4c897faaa9d2a4933, type: 2}
-  slashEffect: {fileID: 9148284441419885049, guid: 3a553466e24ab7d4f9e9e35a7260d20b, type: 3}
   hitbox: {fileID: 7981076034838832986}
   hitpoint: {fileID: 8402292832771716410}
-  panelEffect: {fileID: 0}
   damage: 1
+  health: 50
+  _currentHP: 0
   _attackSpeed: 0.5
+  panelEffect: {fileID: 0}
   maxGuardTime: 2
   parryingTime: 0.25
   guardCoolTime: 0.25

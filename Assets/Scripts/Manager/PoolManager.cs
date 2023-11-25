@@ -28,6 +28,7 @@ public class PoolManager : MonoBehaviour
         }
     }
 
+    //풀에 있는 오브젝트 가져다쓰기
     public GameObject Get(string name)
     {
         GameObject select = null;
@@ -60,6 +61,7 @@ public class PoolManager : MonoBehaviour
         return select;
     }
 
+    //오브젝트를 풀에 반환
     public void Return(GameObject item)
     {
         item.SetActive(false);

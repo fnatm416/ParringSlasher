@@ -36,7 +36,7 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "85a0f6f0-49a5-4bf0-84f5-10c6348db03a",
+                    "id": "3a87b4a3-185a-4084-8f9a-091868dda0ac",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
@@ -91,7 +91,7 @@
                 },
                 {
                     "name": "",
-                    "id": "76aba5b0-6c3f-4bf4-b4d7-1950101d4aaa",
+                    "id": "30626eeb-9dec-456e-9a68-19b71fb5bf12",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
@@ -647,12 +647,12 @@
             "bindingGroup": "Keyboard&Mouse",
             "devices": [
                 {
-                    "devicePath": "<Keyboard>",
+                    "devicePath": "<Mouse>",
                     "isOptional": false,
                     "isOR": false
                 },
                 {
-                    "devicePath": "<Mouse>",
+                    "devicePath": "<Keyboard>",
                     "isOptional": false,
                     "isOR": false
                 }

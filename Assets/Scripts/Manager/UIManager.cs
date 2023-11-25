@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager instance = null;
+    public static UIManager instance;
 
     public RectTransform result_ui; //결과창 ui
     public RectTransform pause_ui;  //게임 일시중지 ui
@@ -29,13 +29,14 @@ public class UIManager : MonoBehaviour
 
     void Awake()
     {
+        if (instance == null)
+            instance = this;
+
         Init();
     }
 
     public void Init()
     {
-        if (instance == null)
-            instance = this;
         //플레이어의 사운드 설정 불러오기
         if (PlayerPrefs.HasKey("Bgm") && PlayerPrefs.HasKey("Sfx"))
         {
@@ -58,9 +59,9 @@ public class UIManager : MonoBehaviour
 
     //UI최신화
     void UpdateUI()
-    {       
+    {
         //현재 체력 업데이트
-        hpGage.fillAmount = GameManager.instance.currentHp / GameManager.instance.maxHp;
+        hpGage.fillAmount = GameManager.instance.player.currentHP / GameManager.instance.player.health;
 
         //설정창에서 소리가 0일때, 핸들 아이콘 변경
         if (SoundManager.instance.bgmVolume <= 0)
@@ -74,7 +75,6 @@ public class UIManager : MonoBehaviour
             sfxHandle.sprite = sfxHandleImages[0];
     }
 
-    //Pause 창에서 버튼 이미지 교체
     public void SwitchControl()
     {
         //레이아웃 그룹에서 위치를 교환
@@ -85,9 +85,9 @@ public class UIManager : MonoBehaviour
         moibleIcons[1].transform.SetSiblingIndex(left);
     }
 
-    //게임오버 후 점수 최신화
     public void ShowScore()
-    {       
+    {
+        result_ui.gameObject.SetActive(true);
         currentScore.text = GameManager.instance.currentScore.ToString("N0");
         highScore.text = PlayerPrefs.GetInt("HighScore").ToString("N0");
     }
